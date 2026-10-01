@@ -1,0 +1,15 @@
+<clickhouse>
+  <profiles>
+    <langfuse>
+      <log_queries>0</log_queries>
+    </langfuse>
+  </profiles>
+  <users>
+    <langfuse>
+      <password>langfuse-local-password</password>
+      <networks><ip>::/0</ip></networks>
+      <profile>langfuse</profile>
+      <quota>default</quota>
+    </langfuse>
+  </users>
+</clickhouse>

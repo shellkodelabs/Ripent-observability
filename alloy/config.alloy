@@ -1,0 +1,34 @@
+otelcol.receiver.otlp "ripent" {
+  grpc { endpoint = "0.0.0.0:4317" }
+  http { endpoint = "0.0.0.0:4318" }
+  output {
+    traces  = [otelcol.processor.batch.ripent.input]
+    metrics = [otelcol.processor.batch.ripent.input]
+    logs    = [otelcol.processor.batch.ripent.input]
+  }
+}
+
+otelcol.processor.batch "ripent" {
+  timeout = "5s"
+  send_batch_size = 512
+  output {
+    traces  = [otelcol.exporter.otlp.tempo.input]
+    metrics = [otelcol.exporter.otlphttp.mimir.input]
+    logs    = [otelcol.exporter.otlphttp.loki.input]
+  }
+}
+
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = "tempo:4317"
+    tls { insecure = true }
+  }
+}
+
+otelcol.exporter.otlphttp "mimir" {
+  client { endpoint = "http://mimir:9009/otlp" }
+}
+
+otelcol.exporter.otlphttp "loki" {
+  client { endpoint = "http://loki:3100/otlp" }
+}

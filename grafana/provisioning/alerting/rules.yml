@@ -1,0 +1,42 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: ripent-watchdog
+    folder: Ripent Observability
+    interval: 1m
+    rules:
+      - uid: ripent-watchdog
+        title: Ripent monitoring watchdog
+        condition: always
+        for: 0s
+        isPaused: true
+        noDataState: NoData
+        execErrState: Error
+        annotations:
+          summary: "Ripent observability watchdog heartbeat"
+          description: "Enable the external heartbeat contact point only after watchdog_heartbeat_url is configured."
+        labels:
+          alertname: Watchdog
+          service: observability
+        data:
+          - refId: always
+            queryType: ""
+            relativeTimeRange: {from: 60, to: 0}
+            datasourceUid: __expr__
+            model:
+              refId: always
+              type: math
+              expression: "1"
+          - refId: condition
+            queryType: ""
+            relativeTimeRange: {from: 60, to: 0}
+            datasourceUid: __expr__
+            model:
+              refId: condition
+              type: threshold
+              expression: always
+              conditions:
+                - evaluator: {params: [0], type: gt}
+                  operator: {type: and}
+                  query: {params: [always]}
+                  reducer: {params: [], type: last}
