@@ -1,4 +1,4 @@
-# Riptide Observability
+# Ripent Observability
 
 Dedicated source repository for Ripent's open-source observability images:
 Alloy, ClickHouse, Grafana, Loki, Mimir, Tempo, and Langfuse.
